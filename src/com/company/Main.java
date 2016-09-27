@@ -1,7 +1,8 @@
 package com.company;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import jodd.json.JsonSerializer;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
 
         HashMap<String, ArrayList<Person>>  mapByCountry = new HashMap<>();
         ArrayList<Person> personArray = new ArrayList<>();
@@ -41,5 +42,19 @@ public class Main {
             }
             System.out.printf("%s -- %s %s from %s\n", p.id, p.firstName, p.lastName, p.country);
         }
+        saveToJson(mapByCountry);
     }
+    public static void saveToJson (HashMap<String, ArrayList<Person>>mapByCountry) throws IOException {
+        File file = new File("people.json");
+        JsonSerializer serializer = new JsonSerializer();
+        String json = serializer.deep(true).serialize(mapByCountry);
+        FileWriter fw = new FileWriter(file);
+        fw.write(json);
+        fw.close();
+    }
+    public static void scanFile () {
+
+    }
+
 }
+
